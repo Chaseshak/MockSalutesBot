@@ -20,7 +20,16 @@ reddit = praw.Reddit(user_agent="MockSaluteBot (by /u/chaseshak)",
 subreddit = reddit.subreddit("HIMYM")
 
 
-def reply_to_comment():
+def reply_to_comment(comment, word, to_reply):
+
+    # Safety check the to_reply word for any odd characters
+    # TODO
+
+    mock_salute = mapping[word] + " " + to_reply.title()
+
+    print("Salute: " + mock_salute)
+
+    # print("Comment: " + str(comment) + " word: " + word + " reply: " + mapping[word] + " " + to_reply)
     return
 
 
@@ -38,8 +47,18 @@ def check_body(comment):
     for word in words:
         index = body.find(word)
         if index != -1:
-            # Use the length of the found word to determine where to begin parsing
-            print("Found it: " + word + " index: " + str(index))
+            # Split the string by spaces
+            tokens = body.split()
+            # Check for exact instances of the word, if no exact instances, continue
+            # (Prevents things such as 'majorly' or 'generally' from triggering reply
+            try:
+                index_word = tokens.index(word)
+            except ValueError:
+                continue
+
+            # Only get next word if not end of array
+            if index_word != (len(tokens) - 1):
+                reply_to_comment(comment, word, tokens[index_word + 1])
 
 
 for submission in subreddit.hot(limit=10):
