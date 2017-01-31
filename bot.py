@@ -2,13 +2,13 @@ import praw
 import config
 
 
-words = ["major", "colonel", "kernel", "general", "private"]
+words = ["major", "colonel", "kernel", "general", "corporal"]
 mapping = {
     'major': 'Major',
     'colonel': 'Colonel',
     'kernel': 'Colonel',
     'general': 'General',
-    'private': 'Private'
+    'corporal': 'Corporal'
 }
 
 
@@ -23,13 +23,18 @@ subreddit = reddit.subreddit("HIMYM")
 def reply_to_comment(comment, word, to_reply):
 
     # Safety check the to_reply word for any odd characters
-    # TODO
+    to_reply = to_reply.translate({ord(i): None for i in '!@#$\"'})
 
-    mock_salute = mapping[word] + " " + to_reply.title()
+    # Create the mock salute
+    mock_salute = mapping[word] + " " + to_reply.title() + "!"
 
-    print("Salute: " + mock_salute)
+    # Formatted comment reply for Reddit
+    comment_reply = mock_salute + "  \n&nbsp;  \n^(I am a bot. This comment was auto-generated. To learn more " \
+                                  "about me, see my) [^github ^page](https://github.com/Chaseshak/MockSalutesBot)^."
 
-    # print("Comment: " + str(comment) + " word: " + word + " reply: " + mapping[word] + " " + to_reply)
+    # Reply to the comment
+    comment.reply(comment_reply)
+
     return
 
 
