@@ -2,8 +2,7 @@ import praw
 import config
 import peewee
 import prawcore
-import urllib.request
-import json
+
 
 # DB Connection for peewee using config values
 db = peewee.MySQLDatabase(config.db_name, user=config.db_user, password=config.db_pass, host=config.db_host)
@@ -43,7 +42,11 @@ def reply_to_comment():
     try:
         comment.reply(comment_reply)
     except prawcore.exceptions.Forbidden as e:
-        print(str(e))
+        # Remove the row and try the next
+        comment_sql.delete_instance()
+        reply_to_comment()
+        return
+    except praw.exceptions.APIException as e2:
         # Remove the row and try the next
         comment_sql.delete_instance()
         reply_to_comment()
