@@ -83,7 +83,7 @@ def check_body(comment):
 
 
 # Go through 5 most recent /r/all hot posts. called hourly by cron
-for submission in subreddit.hot(limit=10):
+for submission in subreddit.hot(limit=5):
     comments = submission.comments.list()
     for comment in comments:
         check_body(comment)
