@@ -82,8 +82,8 @@ def check_body(comment):
                 reply_to_comment(comment, word, tokens[index_word + 1])
 
 
-# Go through 20 most recent /r/all hot posts
-for submission in subreddit.hot(limit=20):
+# Go through 5 most recent /r/all hot posts. called hourly by cron
+for submission in subreddit.hot(limit=10):
     comments = submission.comments.list()
     for comment in comments:
         check_body(comment)
