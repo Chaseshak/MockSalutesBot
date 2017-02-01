@@ -3,6 +3,20 @@
 # To see what happens once a row is in the DB, see comment_reply.py
 import praw
 import config
+import peewee
+
+
+# DB Connection for peewee using config values
+db = peewee.MySQLDatabase(config.db_name, user=config.db_user, password=config.db_pass, host=config.db_host)
+
+
+# Define comment table class
+class PendingComments(peewee.Model):
+    comment_id = peewee.TextField()
+    salute = peewee.TextField()
+
+    class Meta:
+        database = db
 
 
 words = ["major", "colonel", "kernel", "general", "corporal"]
@@ -15,6 +29,7 @@ mapping = {
 }
 
 
+# Connect to Reddit
 reddit = praw.Reddit(user_agent="MockSaluteBot (by /u/chaseshak)",
                      client_id=config.clientID, client_secret=config.secretID,
                      username=config.uName, password=config.password)
@@ -31,16 +46,9 @@ def reply_to_comment(comment, word, to_reply):
     # Create the mock salute
     mock_salute = mapping[word] + " " + to_reply.title() + "!" + " (｀-´)>"
 
-    # Formatted comment reply for Reddit
-    comment_reply = mock_salute + "  \n&nbsp;  \n^(I am a bot. Mock Salutes are a joke from) " \
-                                  "[^HIMYM](http://how-i-met-your-mother.wikia.com/wiki/Mock_Salutes)^. ^( This"\
-                                  " comment was auto-generated. To learn more " \
-                                  "about me, see my) [^github ^page](https://github.com/Chaseshak/MockSalutesBot)^."
-
-    print(comment_reply)
-
-    # Insert into DB
-    # comment.reply(comment_reply)
+    # Insert into db
+    comment_obj = PendingComments(comment_id=comment.fullname, salute=mock_salute)
+    comment_obj.save()
 
     return
 
