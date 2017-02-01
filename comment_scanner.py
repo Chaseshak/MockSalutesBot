@@ -52,7 +52,7 @@ def reply_to_comment(comment, word, to_reply):
         return
 
     # Insert into db
-    comment_obj = PendingComments(comment_id=comment.fullname, salute=mock_salute)
+    comment_obj = PendingComments(comment_id=str(comment), salute=mock_salute)
     comment_obj.save()
 
     return
