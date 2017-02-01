@@ -49,10 +49,7 @@ def reply_to_comment(comment, word, to_reply):
     # Check that comment doesn't already exist in DB
     query = PendingComments.select().where(PendingComments.comment_id == comment.fullname)
     if query.exists():
-        print("Comment: " + comment.fullname + " already exists in database")
         return
-
-    print("Inserting comment: " + comment.fullname + " into database")
 
     # Insert into db
     comment_obj = PendingComments(comment_id=comment.fullname, salute=mock_salute)
