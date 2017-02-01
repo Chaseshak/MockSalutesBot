@@ -34,7 +34,7 @@ reddit = praw.Reddit(user_agent="MockSaluteBot (by /u/chaseshak)",
                      client_id=config.clientID, client_secret=config.secretID,
                      username=config.uName, password=config.password)
 
-# Set to /r/HIMYM for least likely to be banned for many comments
+
 subreddit = reddit.subreddit("all")
 
 
