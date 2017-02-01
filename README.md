@@ -1,5 +1,5 @@
 # MockSalutesBot
-***Requires python3***
+### ***Requires python3***
  
  The source code repository for a Python reddit bot that crawls comments. If the bot finds a comment such as 'Major', 'Captain', 'General', 'Kernel' (pronunciation) and replies with that title and the following word.
 
