@@ -53,6 +53,7 @@ def reply_to_comment(comment, word, to_reply):
     return
 
 
+# Checks the body of a comment for matching key words
 def check_body(comment):
     # Check for 'MoreComments' object and break it down into Comment objects
     # Recursively calls check_body function
@@ -81,6 +82,7 @@ def check_body(comment):
                 reply_to_comment(comment, word, tokens[index_word + 1])
 
 
+# Go through 20 most recent /r/all hot posts
 for submission in subreddit.hot(limit=20):
     comments = submission.comments.list()
     for comment in comments:
